@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 
 const API = "http://localhost:4001/api";
 
-const card = { padding: 15, background: "#f4f4f6", borderRadius: 8, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 };
-const btn = (bg) => ({ background: bg, color: "#fff", border: "none", borderRadius: 6, padding: "10px 18px", cursor: "pointer", fontWeight: "bold" });
-const input = { padding: 10, border: "1px solid #ddd", borderRadius: 6, fontSize: 15 };
-const list = { listStyle: "none", padding: 0, display: "grid", gap: 10 };
-
 function EggsPage() {
   const [rows, setRows] = useState([]);
   const [count, setCount] = useState("");
@@ -34,16 +29,16 @@ function EggsPage() {
 
   return (
     <>
-      <form onSubmit={log} style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        <input type="number" min="0" required value={count} placeholder="How many eggs today?"
-          onChange={(e) => setCount(e.target.value)} style={{ ...input, flex: 1 }} />
-        <button style={btn("#2b50aa")}>Log 🥚</button>
+      <form className="form" onSubmit={log}>
+        <input className="input" type="number" min="0" required value={count}
+          placeholder="How many eggs today?" onChange={(e) => setCount(e.target.value)} />
+        <button className="btn primary">Log 🥚</button>
       </form>
-      <ul style={list}>
+      <ul className="rows">
         {rows.map((r) => (
-          <li key={r.id} style={card}>
+          <li key={r.id} className="row">
             <span>{r.date}: <b>{r.count}</b> eggs</span>
-            <button onClick={() => del(r.id)} style={btn("#e04444")}>✕</button>
+            <button className="btn danger" onClick={() => del(r.id)}>✕</button>
           </li>
         ))}
       </ul>
@@ -82,25 +77,25 @@ function ExpensesPage() {
 
   return (
     <>
-      <form onSubmit={log} style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        <input required value={item} placeholder="What? (rice, bran, medicine…)"
-          onChange={(e) => setItem(e.target.value)} style={{ ...input, flex: 2 }} />
-        <input type="number" min="0" required value={cost} placeholder="Cost ৳"
-          onChange={(e) => setCost(e.target.value)} style={{ ...input, flex: 1 }} />
-        <button style={btn("#2b50aa")}>Log 💰</button>
+      <form className="form" onSubmit={log}>
+        <input className="input" required value={item} placeholder="What? (rice, bran, medicine…)"
+          onChange={(e) => setItem(e.target.value)} style={{ flex: 2 }} />
+        <input className="input" type="number" min="0" required value={cost} placeholder="Cost ৳"
+          onChange={(e) => setCost(e.target.value)} />
+        <button className="btn primary">Log 💰</button>
       </form>
-      <ul style={list}>
+      <ul className="rows">
         {rows.map((r) => (
-          <li key={r.id} style={card}>
+          <li key={r.id} className="row">
             <span>{r.date} — {r.item}</span>
             <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
               <b>৳{r.cost}</b>
-              <button onClick={() => del(r.id)} style={btn("#e04444")}>✕</button>
+              <button className="btn danger" onClick={() => del(r.id)}>✕</button>
             </span>
           </li>
         ))}
       </ul>
-      <p style={{ textAlign: "right", fontWeight: "bold" }}>All-time total: ৳{total}</p>
+      <p className="total">All-time total: ৳{total}</p>
     </>
   );
 }
@@ -137,27 +132,25 @@ function SalesPage() {
 
   return (
     <>
-      <form onSubmit={log} style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-        <input type="number" min="0" required value={eggs} placeholder="Eggs sold 🥚"
-          onChange={(e) => setEggs(e.target.value)} style={{ ...input, flex: 1 }} />
-        <input type="number" min="0" required value={amount} placeholder="Amount ৳"
-          onChange={(e) => setAmount(e.target.value)} style={{ ...input, flex: 1 }} />
-        <button style={btn("#2b50aa")}>Log 💵</button>
+      <form className="form" onSubmit={log}>
+        <input className="input" type="number" min="0" required value={eggs} placeholder="Eggs sold 🥚"
+          onChange={(e) => setEggs(e.target.value)} />
+        <input className="input" type="number" min="0" required value={amount} placeholder="Amount ৳"
+          onChange={(e) => setAmount(e.target.value)} />
+        <button className="btn primary">Log 💵</button>
       </form>
-      <ul style={list}>
+      <ul className="rows">
         {rows.map((r) => (
-          <li key={r.id} style={card}>
+          <li key={r.id} className="row">
             <span>{r.date} — <b>{r.eggs}</b> eggs</span>
             <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
               <b>৳{r.amount}</b>
-              <button onClick={() => del(r.id)} style={btn("#e04444")}>✕</button>
+              <button className="btn danger" onClick={() => del(r.id)}>✕</button>
             </span>
           </li>
         ))}
       </ul>
-      <p style={{ textAlign: "right", fontWeight: "bold" }}>
-        Sold: {eggsSold} eggs · Income: ৳{income}
-      </p>
+      <p className="total">Sold: {eggsSold} eggs · Income: ৳{income}</p>
     </>
   );
 }
@@ -172,32 +165,31 @@ function StatsPage() {
   if (!s) return <p>Crunching the numbers… 🧮</p>;
 
   const cards = [
-    ["🥚 Eggs today", s.eggsToday],
-    ["📈 7-day average", `${s.avg7}/day`],
-    ["🦆 Lay rate", `${s.layRate}%`],
-    ["🐣 Layers now", s.layers],
-    ["🌱 Upcoming ducks", s.upcoming],
-    ["💵 Income (month)", `৳${s.incomeMonth}`],
-    ["💰 Spend (month)", `৳${s.spendMonth}`],
-    ["🧺 Eggs sold (month)", s.eggsSoldMonth ?? "—"],
+    ["🥚", "Eggs today", s.eggsToday],
+    ["📈", "7-day average", `${s.avg7}/day`],
+    ["🦆", "Lay rate", `${s.layRate}%`],
+    ["🐣", "Layers now", s.layers],
+    ["🌱", "Upcoming ducks", s.upcoming],
+    ["💵", "Income (month)", `৳${s.incomeMonth}`],
+    ["💰", "Spend (month)", `৳${s.spendMonth}`],
+    ["🧺", "Eggs sold (month)", s.eggsSoldMonth ?? "—"],
   ];
 
   return (
     <>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-        {cards.map(([label, value]) => (
-          <div key={label} style={{ ...card, flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
-            <span style={{ color: "#666", fontSize: 14 }}>{label}</span>
-            <b style={{ fontSize: 22 }}>{value}</b>
+      <div className="grid">
+        {cards.map(([icon, label, value]) => (
+          <div className="stat" key={label}>
+            <span className="icon">{icon}</span>
+            <span className="label">{label}</span>
+            <b className="value">{value}</b>
           </div>
         ))}
       </div>
 
-      <div style={{ ...card, marginTop: 12, flexDirection: "column", gap: 6, textAlign: "center", justifyContent: "center", background: s.profitMonth >= 0 ? "#e8f7ee" : "#fdecec" }}>
-        <span style={{ color: "#666" }}>🏆 THIS MONTH'S PROFIT</span>
-        <b style={{ fontSize: 30, color: s.profitMonth >= 0 ? "#16a34a" : "#e04444" }}>
-          ৳{s.profitMonth}
-        </b>
+      <div className={s.profitMonth >= 0 ? "profit up" : "profit down"}>
+        <span className="label">🏆 THIS MONTH'S PROFIT</span>
+        <b className="big">৳{s.profitMonth}</b>
       </div>
     </>
   );
@@ -207,14 +199,17 @@ export default function App() {
   const [tab, setTab] = useState("eggs");
 
   return (
-    <main style={{ maxWidth: 640, margin: "40px auto", fontFamily: "sans-serif", padding: 20 }}>
-      <h1>🦆 QuackTrack</h1>
+    <main className="page">
+      <header className="head">
+        <h1>🦆 QuackTrack</h1>
+        <p className="tag">Khaki Campbell command center · 34 layers + 11 rising</p>
+      </header>
 
-      <nav style={{ display: "flex", gap: 8, marginBottom: 24 }}>
-        <button onClick={() => setTab("eggs")} style={btn(tab === "eggs" ? "#2b50aa" : "#bbb")}>🥚 Eggs</button>
-        <button onClick={() => setTab("expenses")} style={btn(tab === "expenses" ? "#2b50aa" : "#bbb")}>💰 Expenses</button>
-        <button onClick={() => setTab("sales")} style={btn(tab === "sales" ? "#2b50aa" : "#bbb")}>💵 Sales</button>
-        <button onClick={() => setTab("stats")} style={btn(tab === "stats" ? "#2b50aa" : "#bbb")}>📊 Stats</button>
+      <nav className="tabs">
+        <button className={tab === "eggs" ? "tab active" : "tab"} onClick={() => setTab("eggs")}>🥚 Eggs</button>
+        <button className={tab === "expenses" ? "tab active" : "tab"} onClick={() => setTab("expenses")}>💰 Expenses</button>
+        <button className={tab === "sales" ? "tab active" : "tab"} onClick={() => setTab("sales")}>💵 Sales</button>
+        <button className={tab === "stats" ? "tab active" : "tab"} onClick={() => setTab("stats")}>📊 Stats</button>
       </nav>
 
       {tab === "eggs" && <EggsPage />}
